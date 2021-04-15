@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { GameContext } from '../context';
-import { HIDDEN } from '../minesweeper';
+import { HIDDEN, MARK, MINE } from '../minesweeper';
 
 const Cell = ({ cell }) => {
   const { leftClickCell, rightClickCell } = useContext(GameContext);
@@ -14,11 +14,20 @@ const Cell = ({ cell }) => {
     rightClickCell(cell);
   };
 
-  const x = cell.status === HIDDEN ? 'board__cell' : 'board__cell cell_open';
+  const cellStyle =
+    cell.status === HIDDEN || cell.status === MARK
+      ? 'board__cell_close'
+      : 'board__cell_open';
+
+  const isMine = cell.status === MINE && ' mine';
 
   return (
-    <div className={x} onClick={handleClick} onContextMenu={handleContextMenu}>
-      {cell.content}
+    <div
+      className={`board__cell ${cellStyle} ${isMine}`}
+      onClick={handleClick}
+      onContextMenu={handleContextMenu}
+    >
+      {cell.status === HIDDEN ? '' : cell.content}
     </div>
   );
 };

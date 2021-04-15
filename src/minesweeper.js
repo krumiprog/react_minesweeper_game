@@ -5,8 +5,11 @@ export const NUMBER = 'NUMBER';
 
 export const LEFT_CLICK = 'LEFT_CLICK';
 export const RIGHT_CLICK = 'RIGHT_CLICK';
+export const NEW_GAME = 'NEW_GAME';
+export const TIME = 'TIME';
 
-export const createBoard = ({ boardSize, numberMines }) => {
+export const createBoard = initState => {
+  const { boardSize, numberMines } = initState;
   const board = [];
 
   for (let x = 0; x < boardSize; x++) {
@@ -30,7 +33,7 @@ export const createBoard = ({ boardSize, numberMines }) => {
     board[x][y].content = '💥';
   });
 
-  return { boardSize, numberMines, board };
+  return { ...initState, board };
 };
 
 export const openCell = (board, cell) => {
@@ -55,6 +58,35 @@ export const openCell = (board, cell) => {
   }
 
   return;
+};
+
+export const checkGameResult = board => {
+  const isWin = checkWin(board);
+  const isLose = checkLose(board);
+
+  return { isWin, isLose };
+};
+
+export const checkAllMinesFounded = board => {
+  const mines = board.reduce((prev, row) => {
+    return prev.concat(row.filter(cell => cell.content === '💥'));
+  }, []);
+
+  return mines.every(mine => mine.status === MARK);
+};
+
+const checkWin = board => {
+  return board.every(row =>
+    row.every(
+      cell =>
+        cell.status === NUMBER ||
+        (cell.mine && (cell.status === HIDDEN || cell.status === MARK))
+    )
+  );
+};
+
+const checkLose = board => {
+  return board.some(row => row.some(cell => cell.status === MINE));
 };
 
 const getNearbyCells = (board, { x, y }) => {
