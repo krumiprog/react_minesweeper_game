@@ -43,6 +43,10 @@ const reducer = (state, action) => {
       const newState = { ...state };
       const newCell = newState.board[cell.x][cell.y];
 
+      if (!newState.start) {
+        newState.start = true;
+      }
+
       if (newCell.status !== HIDDEN && newCell.status !== MARK) {
         return state;
       }
@@ -64,10 +68,7 @@ const reducer = (state, action) => {
 
       if (isWin) {
         newState.isWin = true;
-      }
-
-      if (!newState.start) {
-        newState.start = true;
+        newState.start = false;
       }
 
       return newState;
