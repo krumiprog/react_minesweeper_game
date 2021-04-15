@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from 'react';
+import { createContext, useEffect, useReducer, useRef } from 'react';
 import reducer from './reducer';
 import {
   createBoard,
@@ -34,7 +34,7 @@ const init = initialState => {
 const GameProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState, init);
 
-  useEffect(() => {}, [state.start]);
+  const intervalRef = useRef();
 
   const leftClickCell = cell => {
     dispatch({ type: LEFT_CLICK, payload: cell });
@@ -69,6 +69,16 @@ const GameProvider = ({ children }) => {
       }),
     });
   };
+
+  useEffect(() => {
+    if (state.start) {
+      intervalRef.current = setInterval(() => updateTime(), 1000);
+    } else {
+      clearInterval(intervalRef.current);
+    }
+
+    return () => clearInterval(intervalRef.current);
+  }, [state.start]);
 
   return (
     <GameContext.Provider

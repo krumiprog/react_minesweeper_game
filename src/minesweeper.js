@@ -60,6 +60,16 @@ export const openCell = (board, cell) => {
   return;
 };
 
+export const openAllMines = board => {
+  board.forEach(row =>
+    row.forEach(cell => {
+      if (cell.content === '💥') {
+        cell.status = MINE;
+      }
+    })
+  );
+};
+
 export const checkGameResult = board => {
   const isWin = checkWin(board);
   const isLose = checkLose(board);

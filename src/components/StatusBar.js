@@ -6,6 +6,7 @@ const StatusBar = () => {
     difficulty,
     numberMines,
     time,
+    isLose,
     changeDifficulty,
     startNewGame,
   } = useContext(GameContext);
@@ -31,7 +32,7 @@ const StatusBar = () => {
         <div>&nbsp;💣 {numberMines}</div>
       </div>
       <button className="btn_start" onClick={() => startNewGame()}>
-        😀
+        {isLose ? '😵' : '😀'}
       </button>
       <div>🕙 {time}</div>
     </div>

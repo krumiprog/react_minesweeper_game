@@ -1,5 +1,6 @@
 import {
   openCell,
+  openAllMines,
   checkGameResult,
   checkAllMinesFounded,
   HIDDEN,
@@ -18,13 +19,20 @@ const reducer = (state, action) => {
       const newState = JSON.parse(JSON.stringify(state));
       const newCell = newState.board[cell.x][cell.y];
 
+      if (!newState.start) {
+        newState.start = true;
+      }
+
       openCell(newState.board, newCell);
       const { isWin, isLose } = checkGameResult(newState.board);
 
       if (isWin) {
         newState.isWin = true;
+        newState.start = false;
       } else if (isLose) {
         newState.isLose = true;
+        newState.start = false;
+        openAllMines(newState.board);
       }
 
       return newState;
@@ -56,6 +64,10 @@ const reducer = (state, action) => {
 
       if (isWin) {
         newState.isWin = true;
+      }
+
+      if (!newState.start) {
+        newState.start = true;
       }
 
       return newState;
