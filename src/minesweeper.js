@@ -63,7 +63,8 @@ export const openCell = (board, cell) => {
 export const openAllMines = board => {
   board.forEach(row =>
     row.forEach(cell => {
-      if (cell.content === '💥') {
+      if (cell.mine) {
+        cell.content = '💥';
         cell.status = MINE;
       }
     })

@@ -23,8 +23,8 @@ const initialState = {
 
 const gameDifficulty = {
   easy: { boardSize: 10, numberMines: 10 },
-  medium: { boardSize: 15, numberMines: 50 },
-  hard: { boardSize: 20, numberMines: 100 },
+  medium: { boardSize: 15, numberMines: 40 },
+  hard: { boardSize: 20, numberMines: 70 },
 };
 
 const init = initialState => {
